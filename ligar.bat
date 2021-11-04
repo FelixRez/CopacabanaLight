@@ -1,1 +1,1 @@
-C:\Windows\System32\cmd.exe /k "venv\Scripts\activate.bat && python main.py"
+cmd /k ".\Scripts\activate.bat && python main.py"
