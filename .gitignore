@@ -15,6 +15,12 @@ downloads/
 eggs/
 .eggs/
 lib/
+Lib/
+Scripts/
+share/
+.idea/
+Include/
+etc/
 lib64/
 parts/
 sdist/
@@ -24,7 +30,9 @@ pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
+*.cfg
 *.egg
+Token.pkl
 MANIFEST
 
 # PyInstaller
