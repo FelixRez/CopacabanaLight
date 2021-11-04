@@ -3,6 +3,8 @@ import math
 import re
 from random import random
 from datetime import date
+import json
+import discord
 
 class misc(commands.Cog):
     def __init__(self, client):
@@ -37,7 +39,9 @@ class misc(commands.Cog):
     @commands.command(name="moeda", help="Misc:Retorna cara ou coroa.", alias=['coin', 'toss', 'caracoroa'])
     async def moeda(self, ctx):
         toss = 'cara' if (random() < .5) else 'coroa';
-        await ctx.send('```' + ctx.message.author.name + ' tirou ' + toss + '```')
+        with open(toss+'.png', 'rb') as image:
+            img_toss=discord.File(image)
+            await ctx.send('```' + ctx.message.author.name + ' tirou ' + toss + '\n' +  '```',file=img_toss)
 
     @commands.command(name="escolha", help="Misc:Retorna um dos parametros passados (separar com ;).", alias=['choose', 'pickfrom'])
     async def escolha(self, ctx):
@@ -61,6 +65,29 @@ class misc(commands.Cog):
                    '23-Urso','24-Veado','25-Vaca']
 
         await ctx.send('```' + animals[math.floor(self.randomValue * len(animals))] + '```')
+
+    @commands.command(name="redpill", help="Misc:Ilumina com conhecimento. Para adicionar nova redpill digite (!redpill -nova)", alias=['redpill'])
+    async def redpill(self, ctx, *args):
+        if len(args) > 1 and args[0].lower() == '-nova':
+            nova_redpill = " ".join(args[1:])
+            with open('redpill.json', 'r+', encoding='utf8') as file:
+                dados = json.load(file)
+                dados['redpill'].append(nova_redpill)
+                file.seek(0,0)
+                json.dump(dados, file, ensure_ascii=False)
+                await ctx.send('```' + 'Conhecimento aprendido' + '```')
+
+        elif len(args)==0:
+            with open('redpill.json', 'r+', encoding='utf8') as file:
+                dados = json.load(file)
+                ditados = dados['redpill']
+
+                if dados['date']!= str(date.today()):
+                    file.seek(0, 0)
+                    dados['date']=str(date.today())
+                    dados['random'] = random()
+                    json.dump(dados, file, ensure_ascii=False)
+                await ctx.send('```' + ditados[math.floor(dados['random'] * len(ditados))] + '```')
 
 def setup(client):
     client.add_cog(misc(client))
