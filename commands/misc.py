@@ -39,7 +39,7 @@ class misc(commands.Cog):
     @commands.command(name="moeda", help="Misc:Retorna cara ou coroa.", alias=['coin', 'toss', 'caracoroa'])
     async def moeda(self, ctx):
         toss = 'cara' if (random() < .5) else 'coroa';
-        with open(toss+'.png', 'rb') as image:
+        with open('Image/'+toss+'.png', 'rb') as image:
             img_toss=discord.File(image)
             await ctx.send('```' + ctx.message.author.name + ' tirou ' + toss + '\n' +  '```',file=img_toss)
 
